@@ -3,7 +3,8 @@
 
 var appData = {
     title: 'inside out - js',
-    tagLine: 'continuously falling forward into the light...'
+    tagLine: 'continuously falling forward into the light...',
+    sideMenu: ['posts', 'pages']
 };
 
 window.addEventListener('load', initializeApplication);
@@ -53,14 +54,14 @@ function initializeApplication() {
 
 var timerCount = 0;
 
-function displayPB(){
+function displayPB() {
     if (timerCount <= 100) {
         var x = (timerCount < 25) ? '' : (timerCount < 45) ? timerCount + '%' : (timerCount < 65) ? 'Loading ' + timerCount + '%' : 'Loading Application ' + timerCount + '%';
         document.getElementById("loaderProgressBar").innerHTML = x;
         document.getElementById('loaderProgressBar').setAttribute('aria-valuenow', timerCount);
         document.getElementById('loaderProgressBar').style.width = timerCount + '%    ';
         timerCount++;
-        setTimeout(displayPB, 50);
+        setTimeout(displayPB, 15);
     } else {
         timerCount = 0;
         document.body.innerHTML = formLogin();
@@ -104,8 +105,8 @@ function buildMenu() {
     
    let sm = '<nav class="sidebar animated slideInLeft"><ul class="nav flex-column">';
 
-    for (let i = 0; i < quotArr.length; i++) {
-        sm += '<li class="nav-item"><a class="nav-link active" data-dest="' + i + '" href="#">' + quotArr[i][1].split(",", 1) + '</a></li>';
+    for (let i = 0; i < appData.sideMenu.length; i++) {
+        sm += '<li class="nav-item"><a class="nav-link active" data-dest="' + appData.sideMenu[i] + '" href="#">' + appData.sideMenu[i] + '</a></li>';
     }
 
     sm += '</ul></nav>';
@@ -119,10 +120,18 @@ function buildMain() {
 }
 
 function linkClicked(obj) {
-    console.log(obj.dataset.dest);
-    var str = '<div class="infoDiv"><h1 class="animated zoomIn">' + quotArr[obj.dataset.dest][0] + '</h1><div class="animated slideInRight auth">- ' + quotArr[obj.dataset.dest][1] + '</div></div>';
-     document.getElementById("main").innerHTML = str;
-}
+	console.log(obj.dataset.dest);
+	if (appData.sideMenu.includes(obj.dataset.dest)) {
+		ajax.get('https://me.aaronrimby.com/wp-json/wp/v2/' + obj.dataset.dest, {
+			per_page: '50'
+		}, useData);
+	} else {
+		var str = '<div class="infoDiv"><h1 class="animated zoomIn">' + quotArr[obj.dataset.dest][0] + '</h1><div class="animated slideInRight auth">- ' + quotArr[obj.dataset.dest][1] + '</div></div>';
+		document.getElementById("main").innerHTML = str;
+	}
+    }
+    
+     
 
 
 
