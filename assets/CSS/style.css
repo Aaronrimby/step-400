@@ -11,7 +11,6 @@ html, body{
     
 }
 
- /* begin 403 */
 nav {
     font-size: 14px;
 }
@@ -25,7 +24,7 @@ h1 {
 .contStage {
     position: fixed;
     top: 72px;
-    left: 180px;
+    left: 80px;
     bottom: 72px;
     right: 16px;
     padding: 12px;
